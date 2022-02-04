@@ -17,12 +17,12 @@ export default () => {
       setMovieList(list);
 
       // pegando o featured
-      let originals = list.filter(i => i.slug === "originals");
+      let originals = list.filter((i) => i.slug === "originals");
       let randomChosen = Math.floor(
         Math.random() * (originals[0].items.results.length - 1)
       );
       let chosen = originals[0].items.results[randomChosen];
-      let chosenInfo = await Tmdb.getMovieInfo(chosen.id, 'tv');
+      let chosenInfo = await Tmdb.getMovieInfo(chosen.id, "tv");
       setFeaturedData(chosenInfo);
     };
 
@@ -30,27 +30,25 @@ export default () => {
   }, []);
 
   useEffect(() => {
-
     const scrollListiner = () => {
-      if(window.scrollY > 10) {
+      if (window.scrollY > 10) {
         setBlackHeader(true);
-      }else{
+      } else {
         setBlackHeader(false);
       }
-    }
-    
-    window.addEventListener('scroll', scrollListiner);
+    };
+
+    window.addEventListener("scroll", scrollListiner);
     return () => {
-      window.addEventListener('scroll', scrollListiner);
-    }
+      window.addEventListener("scroll", scrollListiner);
+    };
   }, []);
 
   // header - destaque - as listas - rodapé
   return (
     <div className="page">
-
       <Header black={blackHeader} />
-      
+
       {featuredData && <FeaturedMovie item={featuredData} />}
 
       <section className="lists">
@@ -58,6 +56,25 @@ export default () => {
           <MovieRow key={key} title={item.title} items={item.items} />
         ))}
       </section>
+
+      <footer>
+        Feito com{" "}
+        <span role="img" aria-label="Coração">
+          ♥
+        </span>{" "}
+        por PedrokiDev. <br />
+        Direitos de imagem para Neflix. <br />
+        Dados obtidos diretamente do site Themoviedb.org.
+      </footer>
+
+      {movieList.length <= 0 && (
+        <div className="loading">
+          <img
+            src="https://i.pinimg.com/originals/f9/0f/76/f90f7689233948005f465d98ead56d44.gif"
+            alt="loading"
+          />
+        </div>
+      )}
     </div>
   );
 };
